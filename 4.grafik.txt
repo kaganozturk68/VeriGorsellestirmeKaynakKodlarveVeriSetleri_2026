@@ -1,0 +1,81 @@
+library(readxl)
+library(ggplot2)
+library(scales)
+
+options(scipen = 999)
+
+veri4 <- read_excel("surekli_sigara_birakma_orani.xlsx")
+names(veri4) <- c("Yil", "Birakma_Orani")
+
+grafik4 <- ggplot(veri4, aes(x = Yil, y = Birakma_Orani)) +
+  
+  geom_line(
+    linewidth = 1.5,
+    color = "#8E44AD"
+  ) +
+  
+  geom_point(
+    aes(
+      size = Birakma_Orani,
+      color = Birakma_Orani
+    )
+  ) +
+  
+  scale_color_gradient(
+    low = "#00FF9C",
+    high = "#FF006E",
+    name = "Oran"
+  ) +
+  
+  scale_size(
+    range = c(4, 10),
+    name = "Oran"
+  ) +
+  
+  geom_text(
+    aes(label = paste0(Birakma_Orani, "%")),
+    vjust = -1,
+    size = 4
+  ) +
+  
+  scale_x_continuous(
+    breaks = seq(
+      min(veri4$Yil),
+      max(veri4$Yil),
+      by = 1
+    )
+  ) +
+  
+  labs(
+    title = "Y\u0131llara G\u00f6re Sigara B\u0131rakma Oran\u0131",
+    x = "Y\u0131l",
+    y = "B\u0131rakma Oran\u0131 (%)"
+  ) +
+  
+  theme_minimal() +
+  
+  theme(
+    plot.title = element_text(
+      size = 24,
+      face = "bold",
+      hjust = 0.5
+    ),
+    
+    axis.title = element_text(size = 16),
+    
+    axis.text = element_text(size = 12),
+    
+    legend.title = element_text(size = 14),
+    
+    legend.text = element_text(size = 12)
+  )
+
+ggsave(
+  filename = "grafik4_Line + Gradient Point Chart.png",
+  plot = grafik4,
+  width = 12,
+  height = 7,
+  dpi = 300
+)
+
+print(grafik4)
