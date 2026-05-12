@@ -1,0 +1,64 @@
+library(readxl)
+library(ggplot2)
+
+veri <- read_excel("surekli_tutun_kullanim_orani.xlsx")
+
+names(veri) <- c("Yil", "Oran")
+
+grafik6 <- ggplot(veri, aes(x = Yil, y = Oran)) +
+
+  geom_point(
+    aes(size = Oran, fill = Oran),
+    shape = 21,
+    color = "black",
+    alpha = 0.9
+  ) +
+
+  geom_text(
+    aes(label = paste0(Oran, "%")),
+    color = "black",
+    fontface = "bold",
+    hjust = 0.5,
+    vjust = 0.5,
+    size = 5
+  ) +
+
+  scale_size(range = c(10, 20)) +
+
+  scale_fill_gradient(
+    low = "#00C9FF",
+    high = "#FF006E"
+  ) +
+
+  coord_cartesian(ylim = c(26.3, 33.2)) +
+
+  labs(
+    title = "Y\u0131llara G\u00f6re T\u00fct\u00fcn Kullan\u0131m Oran\u0131",
+    x = "Y\u0131l",
+    y = "T\u00fct\u00fcn Kullan\u0131m Oran\u0131 (%)",
+    fill = "Oran",
+    size = "Oran"
+  ) +
+
+  theme_minimal() +
+
+  theme(
+    plot.title = element_text(
+      size = 20,
+      hjust = 0.5,
+      face = "bold"
+    ),
+
+    axis.text = element_text(size = 11),
+
+    axis.title = element_text(size = 13)
+  )
+
+ggsave(
+  filename = "grafik6_bubblechart.png",
+  plot = grafik6,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+print(grafik6)
